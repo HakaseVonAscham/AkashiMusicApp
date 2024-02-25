@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import cat.pedralbes.myapp.R
@@ -12,6 +13,9 @@ import cat.pedralbes.musicapp.model.Song
 class MusicPlayerActivity : AppCompatActivity() {
     private  val songsList: MutableList<Song> = mutableListOf()
     private var int: Int = 0
+    private var mediaPlayer: MediaPlayer = TODO()
+    private val playerButton: ImageButton = findViewById(R.id.PlayerButton)
+    private val stopButton: ImageButton = findViewById(R.id.StopButton)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +56,46 @@ class MusicPlayerActivity : AppCompatActivity() {
         songsList.add(song15)
 
         playSong(songsList[int])
+
+        stopButton.setOnClickListener {
+            stopSong()
+        }
+
+        playerButton.setOnClickListener {
+            pauseSong()
+        }
+    }
+
+    private fun stopSong(){
+        mediaPlayer.stop()
+        mediaPlayer.release()
+
+        playerButton.setOnClickListener {
+            resumeSong()
+        }
+        playerButton.setBackgroundResource(R.drawable.play)
+    }
+
+    private fun pauseSong(){
+        if(mediaPlayer.isPlaying){
+            mediaPlayer.pause()
+
+            playerButton.setOnClickListener {
+                resumeSong()
+            }
+            playerButton.setBackgroundResource(R.drawable.play)
+        }
+    }
+
+    private fun resumeSong(){
+        if(!mediaPlayer.isPlaying){
+            mediaPlayer.start()
+
+            playerButton.setOnClickListener {
+                pauseSong()
+            }
+            playerButton.setBackgroundResource(R.drawable.pause)
+        }
     }
 
     override fun onDestroy() {
@@ -61,7 +105,7 @@ class MusicPlayerActivity : AppCompatActivity() {
 
     private fun playSong(song: Song) {
         // Crea un MediaPlayer con el recurso de audio
-        val mediaPlayer = MediaPlayer.create(this, song.audioResourceID)
+        mediaPlayer = MediaPlayer.create(this, song.audioResourceID)
 
         // Configura un listener para manejar el ciclo de vida del MediaPlayer
         mediaPlayer.setOnCompletionListener {
