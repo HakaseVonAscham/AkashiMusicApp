@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/CoverLayout"
+        android:layout_width="382dp"
+        android:layout_height="227dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/Cover"
+            android:layout_width="262dp"
+            android:layout_height="224dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
+            android:contentDescription="@string/CoverImageDescription"
+            app:circularflow_defaultRadius="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/akashi" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/MainPlayerButtonsLayout"
+        android:layout_width="384dp"
+        android:layout_height="69dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CoverLayout">
+
+        <ImageButton
+            android:id="@+id/StopButton"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/TimerButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.4" />
+
+        <ImageButton
+            android:id="@+id/TimerButton"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="49dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/RepeatButton"
+            app:layout_constraintStart_toEndOf="@+id/StopButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.4" />
+
+        <ImageButton
+            android:id="@+id/RepeatButton"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="49dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/RandomButton"
+            app:layout_constraintStart_toEndOf="@+id/TimerButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.4" />
+
+        <ImageButton
+            android:id="@+id/RandomButton"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/RepeatButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.4" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/PlayerNavLayout"
+        android:layout_width="383dp"
+        android:layout_height="212dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/MainPlayerButtonsLayout">
+
+        <ImageButton
+            android:id="@+id/PlayerButton"
+            android:layout_width="87dp"
+            android:layout_height="75dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/play"
+            android:contentDescription="@string/PlayerSongButton" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ButtonsLayout"
+        android:layout_width="355dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PlayerNavLayout">
+
+        <ImageButton
+            android:id="@+id/MusicExplorerButton"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/SettingsButton"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.384" />
+
+
+        <ImageButton
+            android:id="@+id/SettingsButton"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/MusicExplorerButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.384" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
