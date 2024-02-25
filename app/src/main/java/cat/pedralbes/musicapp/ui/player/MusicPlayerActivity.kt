@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -13,9 +14,10 @@ import cat.pedralbes.musicapp.model.Song
 class MusicPlayerActivity : AppCompatActivity() {
     private  val songsList: MutableList<Song> = mutableListOf()
     private var int: Int = 0
-    private var mediaPlayer: MediaPlayer = TODO()
-    private val playerButton: ImageButton = findViewById(R.id.PlayerButton)
-    private val stopButton: ImageButton = findViewById(R.id.StopButton)
+    private var shouldReset: Boolean = false
+    private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var playerButton: ImageButton
+    private lateinit var stopButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +57,12 @@ class MusicPlayerActivity : AppCompatActivity() {
         songsList.add(song14)
         songsList.add(song15)
 
-        playSong(songsList[int])
+        val randomIndex = (0 until songsList.size).random()
+        playSong(songsList[randomIndex])
+        int = randomIndex
+
+        playerButton = findViewById(R.id.PlayerButton)
+        stopButton = findViewById(R.id.StopButton)
 
         stopButton.setOnClickListener {
             stopSong()
@@ -64,12 +71,14 @@ class MusicPlayerActivity : AppCompatActivity() {
         playerButton.setOnClickListener {
             pauseSong()
         }
+
+        playerButton.setBackgroundResource(R.drawable.pause)
     }
 
     private fun stopSong(){
         mediaPlayer.stop()
         mediaPlayer.release()
-
+        shouldReset = true
         playerButton.setOnClickListener {
             resumeSong()
         }
@@ -79,7 +88,7 @@ class MusicPlayerActivity : AppCompatActivity() {
     private fun pauseSong(){
         if(mediaPlayer.isPlaying){
             mediaPlayer.pause()
-
+            shouldReset = false
             playerButton.setOnClickListener {
                 resumeSong()
             }
@@ -88,14 +97,24 @@ class MusicPlayerActivity : AppCompatActivity() {
     }
 
     private fun resumeSong(){
-        if(!mediaPlayer.isPlaying){
-            mediaPlayer.start()
-
+        if(!shouldReset){
+            if(!mediaPlayer.isPlaying){
+                mediaPlayer.start()
+                playerButton.setOnClickListener {
+                    pauseSong()
+                }
+                playerButton.setBackgroundResource(R.drawable.pause)
+            }
+        } else{
+            playSong(songsList[int])
+// To Simplify
             playerButton.setOnClickListener {
                 pauseSong()
             }
             playerButton.setBackgroundResource(R.drawable.pause)
         }
+
+
     }
 
     override fun onDestroy() {
@@ -119,14 +138,19 @@ class MusicPlayerActivity : AppCompatActivity() {
         }
 
         // Obtén el bitmap de la portada de los metadatos del archivo MP3
-        val metaDataRetriever = MediaMetadataRetriever()
-        metaDataRetriever.setDataSource(resources.openRawResourceFd(song.audioResourceID).fileDescriptor)
-        val coverBytes = metaDataRetriever.embeddedPicture
-        val coverBitmap = coverBytes?.let { BitmapFactory.decodeByteArray(it, 0, it.size) }
+        try {
+            val metaDataRetriever = MediaMetadataRetriever()
+            metaDataRetriever.setDataSource(resources.openRawResourceFd(song.audioResourceID).fileDescriptor)
+            val coverBytes = metaDataRetriever.embeddedPicture
+            val coverBitmap = coverBytes?.let { BitmapFactory.decodeByteArray(it, 0, it.size) }
 
 
-        val coverImageView: ImageView = findViewById(R.id.Cover)
-        coverImageView.setImageBitmap(coverBitmap)
+            val coverImageView: ImageView = findViewById(R.id.Cover)
+            coverImageView.setImageBitmap(coverBitmap)
+        } catch (e: Exception) {
+            Log.e("MusicPlayerActivity", "Error al obtener la portada del archivo de audio: ${e.message}")
+        }
+
         // Aquí puedes usar el coverBitmap como desees, por ejemplo, para mostrarlo en una ImageView
 
         // Inicia la reproducción de la canción
