@@ -1,8 +1,10 @@
 package cat.pedralbes.musicapp.ui.player
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
@@ -171,17 +173,12 @@ class MusicPlayerActivity : AppCompatActivity() {
             playSong(songsList[int])
         }
 
-        try {
-            val metaDataRetriever = MediaMetadataRetriever()
-            metaDataRetriever.setDataSource(resources.openRawResourceFd(song.audioResourceID).fileDescriptor)
-            val coverBytes = metaDataRetriever.embeddedPicture
-            val coverBitmap = coverBytes?.let { BitmapFactory.decodeByteArray(it, 0, it.size) }
-
-
+        val coverBitmap = getCoverBitmap(song)
+        if (coverBitmap != null) {
             val coverImageView: ImageView = findViewById(R.id.Cover)
             coverImageView.setImageBitmap(coverBitmap)
-        } catch (e: Exception) {
-            Log.e("MusicPlayerActivity", "Error al obtener la portada del archivo de audio: ${e.message}")
+        } else {
+            // Si no hay portada, puedes establecer una imagen predeterminada aquí
         }
 
         playerButton.setOnClickListener {
@@ -190,5 +187,21 @@ class MusicPlayerActivity : AppCompatActivity() {
         playerButton.setBackgroundResource(R.drawable.pause)
 
         mediaPlayer.start()
+    }
+
+    private fun getCoverBitmap(song: Song): Bitmap? {
+        val mmr = MediaMetadataRetriever()
+        try {
+            mmr.setDataSource(applicationContext, Uri.parse("android.resource://${packageName}/${song.audioResourceID}"))
+            val rawArt = mmr.embeddedPicture
+            if (rawArt != null) {
+                return BitmapFactory.decodeByteArray(rawArt, 0, rawArt.size)
+            }
+        } catch (e: Exception) {
+            Log.e("MusicPlayerActivity", "Error al obtener la portada del archivo de audio: ${e.message}")
+        } finally {
+            mmr.release()
+        }
+        return null
     }
 }
