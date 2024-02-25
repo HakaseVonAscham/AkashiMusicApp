@@ -18,6 +18,8 @@ class MusicPlayerActivity : AppCompatActivity() {
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var playerButton: ImageButton
     private lateinit var stopButton: ImageButton
+    private lateinit var prevButton: ImageButton
+    private lateinit var nextButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,21 +60,26 @@ class MusicPlayerActivity : AppCompatActivity() {
         songsList.add(song15)
 
         val randomIndex = (0 until songsList.size).random()
-        playSong(songsList[randomIndex])
         int = randomIndex
 
         playerButton = findViewById(R.id.PlayerButton)
         stopButton = findViewById(R.id.StopButton)
+        prevButton = findViewById(R.id.PrevButton)
+        nextButton = findViewById(R.id.NextButton)
 
         stopButton.setOnClickListener {
             stopSong()
         }
 
-        playerButton.setOnClickListener {
-            pauseSong()
+        prevButton.setOnClickListener{
+            previousSong()
         }
 
-        playerButton.setBackgroundResource(R.drawable.pause)
+        nextButton.setOnClickListener {
+            nextSong()
+        }
+
+        playSong(songsList[randomIndex])
     }
 
     private fun stopSong(){
@@ -113,20 +120,47 @@ class MusicPlayerActivity : AppCompatActivity() {
             }
             playerButton.setBackgroundResource(R.drawable.pause)
         }
+    }
 
+    private fun previousSong() {
+        if (int > 0) {
+            int -= 1
+        } else {
+            int = songsList.size - 1
+        }
 
+        if(shouldReset){
+            playSong(songsList[int])
+        } else {
+            mediaPlayer.stop()
+            mediaPlayer.release()
+            playSong(songsList[int])
+        }
+
+    }
+
+    private fun nextSong() {
+        if (int < songsList.size - 1) {
+            int += 1
+        } else {
+            int = 0
+        }
+        if(shouldReset){
+            playSong(songsList[int])
+        } else {
+            mediaPlayer.stop()
+            mediaPlayer.release()
+            playSong(songsList[int])
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        // Liberar los recursos de los MediaPlayers (en este caso no se necesita)
     }
 
     private fun playSong(song: Song) {
-        // Crea un MediaPlayer con el recurso de audio
         mediaPlayer = MediaPlayer.create(this, song.audioResourceID)
 
-        // Configura un listener para manejar el ciclo de vida del MediaPlayer
         mediaPlayer.setOnCompletionListener {
             int += 1
 
@@ -137,7 +171,6 @@ class MusicPlayerActivity : AppCompatActivity() {
             playSong(songsList[int])
         }
 
-        // Obtén el bitmap de la portada de los metadatos del archivo MP3
         try {
             val metaDataRetriever = MediaMetadataRetriever()
             metaDataRetriever.setDataSource(resources.openRawResourceFd(song.audioResourceID).fileDescriptor)
@@ -151,9 +184,11 @@ class MusicPlayerActivity : AppCompatActivity() {
             Log.e("MusicPlayerActivity", "Error al obtener la portada del archivo de audio: ${e.message}")
         }
 
-        // Aquí puedes usar el coverBitmap como desees, por ejemplo, para mostrarlo en una ImageView
+        playerButton.setOnClickListener {
+            pauseSong()
+        }
+        playerButton.setBackgroundResource(R.drawable.pause)
 
-        // Inicia la reproducción de la canción
         mediaPlayer.start()
     }
 }
