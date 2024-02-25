@@ -3,4 +3,5 @@
     <string name="initial_button">Start</string>
     <string name="CoverImageDescription">Cover Song Image</string>
     <string name="PlayerSongButton">Play or pause button</string>
+    <string name="NextSong">Next song action</string>
 </resources>

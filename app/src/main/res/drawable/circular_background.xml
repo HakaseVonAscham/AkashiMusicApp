@@ -1,0 +1,9 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="20dp" /> <!-- Ajusta el radio según la cantidad de redondeo que desees -->
+    <solid android:color="@android:color/transparent" /> <!-- Color de fondo transparente -->
+    <stroke
+        android:width="2dp"
+        android:color="@android:color/white" />
+</shape>
+

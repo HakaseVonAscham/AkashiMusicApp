@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import cat.pedralbes.myapp.R
 import cat.pedralbes.musicapp.model.Song
@@ -149,6 +150,7 @@ class MusicPlayerActivity : AppCompatActivity() {
         }
         if(shouldReset){
             playSong(songsList[int])
+            shouldReset = false
         } else {
             mediaPlayer.stop()
             mediaPlayer.release()
@@ -160,6 +162,7 @@ class MusicPlayerActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    // EXTRACT TO SERVICE KOTLIN CLASS
     private fun playSong(song: Song) {
         mediaPlayer = MediaPlayer.create(this, song.audioResourceID)
 
@@ -180,6 +183,11 @@ class MusicPlayerActivity : AppCompatActivity() {
         } else {
             // Si no hay portada, puedes establecer una imagen predeterminada aquí
         }
+
+        val (artist, title) = getSongMetadata(song)
+        val titleSong: TextView = findViewById(R.id.SongTitle)
+        titleSong.text = title
+        Log.d("MusicPlayerActivity", "Artista: $artist, Título: $title")
 
         playerButton.setOnClickListener {
             pauseSong()
@@ -203,5 +211,19 @@ class MusicPlayerActivity : AppCompatActivity() {
             mmr.release()
         }
         return null
+    }
+
+    private fun getSongMetadata(song: Song): Pair<String?, String?> {
+        val metaDataRetriever = MediaMetadataRetriever()
+        Log.e("String","W1")
+        metaDataRetriever.setDataSource(applicationContext, Uri.parse("android.resource://${packageName}/${song.audioResourceID}"))
+        Log.e("String","W2")
+        val artist = metaDataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
+        Log.e("String","W3")
+        val title = metaDataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
+        Log.e("String","W4")
+        metaDataRetriever.release()
+
+        return Pair(artist, title)
     }
 }

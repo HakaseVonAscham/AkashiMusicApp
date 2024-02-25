@@ -18,19 +18,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/Cover"
-            android:layout_width="262dp"
-            android:layout_height="224dp"
-            android:layout_marginStart="60dp"
-            android:layout_marginEnd="60dp"
-            android:contentDescription="@string/CoverImageDescription"
-            app:circularflow_defaultRadius="10sp"
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="350dp"
+            android:layout_height="184dp"
+            android:background="@drawable/circular_background"
+            app:layout_constraintBottom_toTopOf="@+id/SongTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/Cover"
+                android:layout_width="331dp"
+                android:layout_height="172dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@string/CoverImageDescription"
+                app:circularflow_defaultRadius="10sp"
+                app:srcCompat="@drawable/akashi" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/SongTitle"
+            android:layout_width="276dp"
+            android:layout_height="43dp"
+            android:layout_marginStart="53dp"
+            android:layout_marginEnd="53dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/small_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/akashi" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -169,7 +191,8 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/PrevButton"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.384" />
+            app:layout_constraintVertical_bias="0.384"
+            android:contentDescription="@string/NextSong" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
